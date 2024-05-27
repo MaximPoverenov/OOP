@@ -1,5 +1,5 @@
 from typing import List
-
+from src.api import HHApi
 class Vacancy:
     """
     Класс для представления вакансии.
