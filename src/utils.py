@@ -20,7 +20,6 @@ def user_interaction():
     7. Фильтрация вакансий по ключевым словам.
     8. Фильтрация вакансий по желаемой зарплате.
     9. Сортировка и вывод отфильтрованных вакансий.
-
     """
     api_hh = HHApi()
     search_query = input("Введите поисковый запрос: ")
@@ -42,8 +41,20 @@ def user_interaction():
             list_vacancies = set(file_worker.select_vacancy(word))
             selected_vacancies.update(list_vacancies)
 
-    ready_vacancies = [vacancy for vacancy in selected_vacancies if desired_salary <= vacancy.salary_from]
+    ready_vacancies = []
+    for vacancy in selected_vacancies:
+        try:
+            if desired_salary <= int(vacancy.salary_from):
+                ready_vacancies.append(vacancy)
+        except ValueError:
+            # Если salary_from не может быть приведена к int, пропускаем эту вакансию
+            continue
+
     result = sorted(ready_vacancies)
 
     for item in result[0:top_n]:
         print(item, '\n')
+
+
+if __name__ == "__main__":
+    user_interaction()
